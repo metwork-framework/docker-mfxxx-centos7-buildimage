@@ -1,3 +1,5 @@
+# automatically generated from https://github.com/metwork-framework/resources/blob/master/cookiecutter/%7B%7Bcookiecutter.repo%7D%7D/docker-mfxxx-yyy-buildimage_drone.yml)
+
 
     
     
@@ -41,6 +43,7 @@ pipeline:
         fi
     when:
       event: push
+
   trigger_master:
     <<: *trigger_common
     repositories:
@@ -69,5 +72,6 @@ pipeline:
       status: success
       event: push
       branch: integration
+
 
 branches: [ master, integration, ci_*, pci_* ]
