@@ -1,10 +1,17 @@
+
+    
+    
+    
+
+
 trigger_common: &trigger_common
-  image: metwork/drone-downstream-specific-image:${DRONE_BRANCH}
+  image: metwork/drone-downstream-specific-image:latest
   pull: true
   secrets: [ downstream_token, downstream_server ]
   params:
     - FORCED_OS_VERSION=centos7
-  
+
+
 
 pipeline:
   docker:
@@ -33,15 +40,17 @@ pipeline:
           fi;
         fi
     when:
-       event: push 
+      event: push
   trigger_master:
     <<: *trigger_common
     repositories:
+
       - metwork-framework/mfserv@master
       - metwork-framework/mfdata@master
       - metwork-framework/mfbase@master
       - metwork-framework/mfadmin@master
       - metwork-framework/mfsysmon@master
+
     when:
       status: success
       event: push
@@ -49,11 +58,13 @@ pipeline:
   trigger_integration:
     <<: *trigger_common
     repositories:
+
       - metwork-framework/mfserv@integration
       - metwork-framework/mfdata@integration
       - metwork-framework/mfbase@integration
       - metwork-framework/mfadmin@integration
       - metwork-framework/mfsysmon@integration
+
     when:
       status: success
       event: push
