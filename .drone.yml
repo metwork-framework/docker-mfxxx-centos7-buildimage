@@ -23,13 +23,7 @@ pipeline:
       - /root:/root
     commands:
       - HASH_BEFORE=`docker images -q metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH}`
-      - if test "${DRONE_BRANCH}" = "master"; then
-          docker build -t metwork/mfxxx-centos7-buildimage:master -t metwork/mfxxx-centos7-buildimage:latest --build-arg BRANCH=master --build-arg CACHEBUST=${DRONE_BUILD_NUMBER} .;
-        elif test "${DRONE_BRANCH}" = "integration"; then
-          docker build -t metwork/mfxxx-centos7-buildimage:integration --build-arg BRANCH=integration --build-arg CACHEBUST=${DRONE_BUILD_NUMBER} .;
-        else
-          docker build -t metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH} --build-arg BRANCH=master --build-arg CACHEBUST=${DRONE_BUILD_NUMBER} .;
-        fi
+      - docker build -t metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH} --build-arg BRANCH=${DRONE_BRANCH} --build-arg CACHEBUST=${DRONE_BUILD_NUMBER} .
       - HASH_AFTER=`docker images -q metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH}`
       - if test "$${HASH_BEFORE}" = "$${HASH_AFTER}"; then
           touch .drone_downstream_bypass;
@@ -44,34 +38,19 @@ pipeline:
     when:
       event: push
 
-  trigger_master:
+  trigger:
     <<: *trigger_common
     repositories:
 
-      - metwork-framework/mfserv@master
-      - metwork-framework/mfdata@master
-      - metwork-framework/mfbase@master
-      - metwork-framework/mfadmin@master
-      - metwork-framework/mfsysmon@master
+      - metwork-framework/mfserv@${DRONE_BRANCH}
+      - metwork-framework/mfdata@${DRONE_BRANCH}
+      - metwork-framework/mfbase@${DRONE_BRANCH}
+      - metwork-framework/mfadmin@${DRONE_BRANCH}
+      - metwork-framework/mfsysmon@${DRONE_BRANCH}
 
     when:
       status: success
       event: push
-      branch: master
-  trigger_integration:
-    <<: *trigger_common
-    repositories:
-
-      - metwork-framework/mfserv@integration
-      - metwork-framework/mfdata@integration
-      - metwork-framework/mfbase@integration
-      - metwork-framework/mfadmin@integration
-      - metwork-framework/mfsysmon@integration
-
-    when:
-      status: success
-      event: push
-      branch: integration
 
 
-branches: [ master, integration, ci_*, pci_* ]
+branches: [ master, integration, release_* ]
