@@ -25,6 +25,7 @@ RUN yum clean all
 RUN yum --disablerepo=* --enablerepo=metwork_${BRANCH} -q list metwork-mfcom* 2>/dev/null |sort |md5sum |awk '{print $1;}' > /tmp/yum_cache
 
 FROM metwork/mfcom-centos7-buildimage:${BRANCH}
+ARG BRANCH
 COPY --from=yum_cache /etc/yum.repos.d/metwork.repo /etc/yum.repos.d/
 COPY --from=yum_cache /tmp/yum_cache .
 RUN yum clean all
