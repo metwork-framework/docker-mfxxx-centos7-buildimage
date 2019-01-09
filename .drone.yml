@@ -54,4 +54,4 @@ pipeline:
       event: push
 
 
-branches: [ master, integration, release_* ]
+branches: [ master, integration, experimental*, release_* ]
