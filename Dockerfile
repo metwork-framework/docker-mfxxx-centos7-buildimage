@@ -30,4 +30,3 @@ COPY --from=yum_cache /etc/yum.repos.d/metwork.repo /etc/yum.repos.d/
 COPY --from=yum_cache /tmp/yum_cache .
 RUN yum clean all
 RUN yum -y install metwork-mfcom
-RUN rpm -qa |sort |md5sum |awk '{print $1;}' >/etc/buildimage_hash
