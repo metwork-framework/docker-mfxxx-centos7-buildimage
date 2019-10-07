@@ -26,7 +26,7 @@ pipeline:
       - if test "${DRONE_BRANCH}" = "master"; then EXTRA_TAGS="-t metwork/mfxxx-centos7-buildimage:latest"; else EXTRA_TAGS=""; fi
       - docker build -t metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH} $${EXTRA_TAGS} --build-arg BRANCH=${DRONE_BRANCH} --build-arg CACHEBUST=${DRONE_BUILD_NUMBER} .
       - HASH_AFTER=`docker images -q metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH}`
-      - if test "$${HASH_BEFORE}" = "$${HASH_AFTER}"; then
+      - if test "$${HASH_BEFORE}" = "$${HASH_AFTER}" -o "mfxxx" != "mfservplugins"; then
           touch .drone_downstream_bypass;
         else
           if test "${DRONE_BRANCH}" = "master"; then
