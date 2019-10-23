@@ -38,6 +38,8 @@ pipeline:
             docker push metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH};
           elif test "${DRONE_BRANCH}" = "release_0.8"; then
             docker push metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH};
+          elif test "${DRONE_BRANCH}" = "release_0.9"; then
+            docker push metwork/mfxxx-centos7-buildimage:${DRONE_BRANCH};
           fi;
         fi
     when:
