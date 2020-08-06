@@ -1,10 +1,9 @@
 [![logo](https://raw.githubusercontent.com/metwork-framework/resources/master/logos/metwork-white-logo-small.png)](http://www.metwork-framework.org)
 # docker-mfxxx-centos7-buildimage
 
-[//]: # (automatically generated from https://github.com/metwork-framework/resources/blob/master/cookiecutter/_%7B%7Bcookiecutter.repo%7D%7D/README.md)
+[//]: # (automatically generated from https://github.com/metwork-framework/github_organization_management/blob/master/common_files/README.md)
 
 **Status (master branch)**
-
 
 
 
@@ -14,8 +13,6 @@
 [![Gitter](https://github.com/metwork-framework/resources/blob/master/badges/community-en.svg)](https://gitter.im/metwork-framework/community-en?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Gitter](https://github.com/metwork-framework/resources/blob/master/badges/community-fr.svg)](https://gitter.im/metwork-framework/community-fr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-
-[//]: # (TABLE_OF_CONTENTS_PLACEHOLDER)
 
 
 ## What is MetWork FrameWork?
@@ -28,11 +25,6 @@ for building and managing production grade applications or micro-services
 ## What is it ?
 
 A centos7 based docker image to build metwork/mfxxx modules (mfdata, mfserv, mfbase...)
-
-
-
-
-
 
 
 
