@@ -43,32 +43,5 @@ pipeline:
     when:
       event: push
 
-  trigger:
-    <<: *trigger_common
-    repositories:
-      - metwork-framework/mfserv@${DRONE_BRANCH}
-      - metwork-framework/mfdata@${DRONE_BRANCH}
-      - metwork-framework/mfbase@${DRONE_BRANCH}
-      - metwork-framework/mfadmin@${DRONE_BRANCH}
-      - metwork-framework/mfsysmon@${DRONE_BRANCH}
-    when:
-      status: success
-      event: push
-      branches: [ integration, experimental*, release_* ]
-
-  trigger_master:
-    <<: *trigger_common
-    repositories:
-      - metwork-framework/mfserv@${DRONE_BRANCH}
-      - metwork-framework/mfdata@${DRONE_BRANCH}
-      - metwork-framework/mfbase@${DRONE_BRANCH}
-      - metwork-framework/mfadmin@${DRONE_BRANCH}
-      - metwork-framework/mfsysmon@${DRONE_BRANCH}
-      - metwork-framework/mfextaddons@${DRONE_BRANCH}
-    when:
-      status: success
-      event: push
-      branches: [ master ]
-
 
 branches: [ master, integration, experimental*, release_* ]
