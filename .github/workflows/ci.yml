@@ -1,0 +1,61 @@
+name: CI
+
+
+    
+    
+    
+
+
+on:
+  push:
+    branches: 
+      - master
+      - integration
+      - experimental*
+      - release_*
+  repository_dispatch:
+    types:
+      - metwork-trigger*
+
+env:
+    WORKFLOW_SCRIPTS_DIR: .github/workflows
+    DOCKER_WORKFLOW_SCRIPTS_DIR: /src/.github/workflows
+    PAYLOAD_BRANCH: ${{ github.event.client_payload.branch}}
+
+jobs:
+  ci_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.client_payload.branch || github.ref }}
+      - name: set variables
+        id: SetVariables
+        run: |
+          ${WORKFLOW_SCRIPTS_DIR}/set_variables.sh
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ steps.SetVariables.outputs.tag_branch }}
+            ${{ steps.SetVariables.outputs.tag_latest }}
+          build-args: |
+            BRANCH=${{ steps.SetVariables.outputs.branch }}
+            CACHEBUST=${{ github.run_number }}
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
