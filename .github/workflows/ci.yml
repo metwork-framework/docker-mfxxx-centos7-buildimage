@@ -29,34 +29,27 @@ jobs:
         id: SetVariables
         run: |
           ${WORKFLOW_SCRIPTS_DIR}/set_variables.sh
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Docker build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ${{ steps.SetVariables.outputs.tag_branch }}
-            ${{ steps.SetVariables.outputs.tag_latest }}
-          build-args: |
-            BRANCH=${{ steps.SetVariables.outputs.branch }}
-            CACHEBUST=${{ github.run_number }}
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: debug env
+        run: |
+          env
+          echo "Dockerfile"
+          cat ./Dockerfile
+      - name: docker build and push
+        id: DockerStep
+        env: 
+          BRANCH: ${{ steps.SetVariables.outputs.branch }}
+          CACHEBUST: ${{ github.run_number }}
+          TAG_BRANCH: ${{ steps.SetVariables.outputs.tag_branch }}
+          TAG_LATEST: ${{ steps.SetVariables.outputs.tag_latest }}
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          ${WORKFLOW_SCRIPTS_DIR}/docker_build.sh
+
 
 
 
       - name: dispatch docker-mfextaddon_python3_ia-centos7-buildimage
-        if: ${{ github.event_name != 'pull_request' && steps.SetVariables.outputs.branch != 'null' }}
+        if: ${{ github.event_name != 'pull_request' && steps.SetVariables.outputs.branch != 'null' && steps.DockerStep.outputs.dispatch_bypass == 'false' }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.METWORK_ACCESS_TOKEN }}
