@@ -58,6 +58,6 @@ jobs:
           token: ${{ secrets.METWORK_ACCESS_TOKEN }}
           repository: metwork-framework/docker-mfextaddon_python3_ia-centos7-buildimage
           event-type: metwork-trigger-${{ steps.SetVariables.outputs.branch }}
-          client-payload: '{"branch": "${{ steps.SetVariables.outputs.branch }}"}, "os": "centos7"'
+          client-payload: '{"branch": "${{ steps.SetVariables.outputs.branch }}", "os": "centos7"}'
 
 
