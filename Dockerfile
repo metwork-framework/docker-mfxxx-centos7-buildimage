@@ -28,5 +28,4 @@ FROM metwork/mfext-centos7-buildimage:${BRANCH}
 ARG BRANCH
 COPY --from=yum_cache /etc/yum.repos.d/metwork.repo /etc/yum.repos.d/
 COPY --from=yum_cache /tmp/yum_cache .
-RUN yum clean all
-RUN yum -y install metwork-mfext-full
+RUN yum clean allRUN yum -y install metwork-mfext-full
