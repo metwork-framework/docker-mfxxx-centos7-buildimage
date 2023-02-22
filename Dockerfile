@@ -29,4 +29,4 @@ ARG BRANCH
 COPY --from=yum_cache /etc/yum.repos.d/metwork.repo /etc/yum.repos.d/
 COPY --from=yum_cache /tmp/yum_cache .
 RUN yum clean all
-RUN yum -y install metwork-mfext-full initscripts vim
+RUN yum -y install metwork-mfext-full initscripts cronie vim
